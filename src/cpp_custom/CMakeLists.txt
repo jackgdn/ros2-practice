@@ -19,6 +19,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(custom_interfaces REQUIRED)
+find_package(rclcpp_action REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -41,11 +42,17 @@ add_executable(transformation_server src/server.cpp)
 ament_target_dependencies(transformation_server rclcpp custom_interfaces)
 add_executable(transformation_client src/client.cpp)
 ament_target_dependencies(transformation_client rclcpp custom_interfaces)
+add_executable(fibonacci_action_server src/action_server.cpp)
+ament_target_dependencies(fibonacci_action_server rclcpp custom_interfaces rclcpp_action)
+add_executable(fibonacci_action_client src/action_client.cpp)
+ament_target_dependencies(fibonacci_action_client rclcpp custom_interfaces rclcpp_action)
 
 install(TARGETS
   coordinate_publisher
   coordinate_subscriber
   transformation_server
   transformation_client
+  fibonacci_action_server
+  fibonacci_action_client
   DESTINATION lib/${PROJECT_NAME}
 )

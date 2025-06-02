@@ -23,6 +23,8 @@ setup(
             "coordinate_subscriber = py_custom.subscriber:main",
             "transformation_server = py_custom.server:main",
             "transformation_client = py_custom.client:main",
+            "fibonacci_action_server = py_custom.action_server:main",
+            "fibonacci_action_client = py_custom.action_client:main",
         ],
     },
 )
