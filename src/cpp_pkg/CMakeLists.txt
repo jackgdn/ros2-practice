@@ -46,9 +46,13 @@ ament_target_dependencies(server rclcpp example_interfaces)
 add_executable(client src/client.cpp)
 ament_target_dependencies(client rclcpp example_interfaces)
 
+add_executable(parameter src/parameter.cpp)
+ament_target_dependencies(parameter rclcpp)
+
 install(TARGETS
   publisher
   subscriber
   server
   client
+  parameter
   DESTINATION lib/${PROJECT_NAME})

@@ -23,6 +23,7 @@ setup(
             "subscriber = py_pkg.subscriber:main",
             "server = py_pkg.server:main",
             "client = py_pkg.client:main",
+            "parameter = py_pkg.parameter:main",
         ],
     },
 )
