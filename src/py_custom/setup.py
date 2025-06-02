@@ -1,11 +1,11 @@
 from setuptools import setup
 
-package_name = "py_pkg"
+package_name = "py_custom"
 
 setup(
-    name="py_pkg",
+    name=package_name,
     version="0.0.0",
-    packages=["py_pkg"],
+    packages=[package_name],
     data_files=[
         ("share/ament_index/resource_index/packages", ["resource/" + package_name]),
         ("share/" + package_name, ["package.xml"]),
@@ -19,10 +19,10 @@ setup(
     tests_require=["pytest"],
     entry_points={
         "console_scripts": [
-            "publisher = py_pkg.publisher:main",
-            "subscriber = py_pkg.subscriber:main",
-            "server = py_pkg.server:main",
-            "client = py_pkg.client:main",
+            "coordinate_publisher = py_custom.publisher:main",
+            "coordinate_subscriber = py_custom.subscriber:main",
+            "transformation_server = py_custom.server:main",
+            "transformation_client = py_custom.client:main",
         ],
     },
 )

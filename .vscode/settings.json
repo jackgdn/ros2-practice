@@ -1,9 +1,11 @@
 {
     "python.autoComplete.extraPaths": [
-        "/opt/ros/foxy/lib/python3.8/site-packages"
+        "/opt/ros/foxy/lib/python3.8/site-packages",
+        "/home/jackgdn/ros2-project/install/custom_interfaces/lib/python3.8/site-packages"
     ],
     "python.analysis.extraPaths": [
-        "/opt/ros/foxy/lib/python3.8/site-packages"
+        "/opt/ros/foxy/lib/python3.8/site-packages",
+        "/home/jackgdn/ros2-project/install/custom_interfaces/lib/python3.8/site-packages"
     ],
     "files.associations": {
         "cctype": "cpp",
