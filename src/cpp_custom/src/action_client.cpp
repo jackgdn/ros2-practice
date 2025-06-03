@@ -8,15 +8,19 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using namespace std::chrono_literals;
 
+// 斐波那契动作客户端类，继承自 rclcpp::Node
 class FibonacciActionClient : public rclcpp::Node {
   public:
+    // 构造函数，初始化节点并创建动作客户端和定时器
     FibonacciActionClient() : Node("fibonacci_action_client") {
         this->action_client_ = rclcpp_action::create_client<Fibonacci>(this, "fibonacci");
         timer_ = this->create_wall_timer(200ms, std::bind(&FibonacciActionClient::send_goal, this));
     }
 
+    // 检查目标是否完成
     bool is_goal_done() { return goal_done_; }
 
+    // 发送动作目标
     void send_goal() {
         this->timer_->cancel();
 
@@ -38,14 +42,16 @@ class FibonacciActionClient : public rclcpp::Node {
         this->future_ = this->action_client_->async_send_goal(goal, send_goal_options);
     }
 
+    // 生成一个随机的斐波那契序列长度
     int random_order() { return time(nullptr) % 20 - 9; }
 
   private:
-    rclcpp_action::Client<Fibonacci>::SharedPtr action_client_;
-    rclcpp::TimerBase::SharedPtr timer_;
-    std::shared_future<std::shared_ptr<FibonacciGoalHandle>> future_;
-    bool goal_done_ = false;
+    rclcpp_action::Client<Fibonacci>::SharedPtr action_client_;       // 动作客户端指针
+    rclcpp::TimerBase::SharedPtr timer_;                              // 定时器指针
+    std::shared_future<std::shared_ptr<FibonacciGoalHandle>> future_; // 发送目标的未来结果
+    bool goal_done_ = false;                                          // 标志目标是否完成
 
+    // 处理目标响应的回调函数
     void goal_response_callback(std::shared_future<FibonacciGoalHandle::SharedPtr> future) {
         auto goal_handle = future.get();
         if (!goal_handle) {
@@ -57,6 +63,7 @@ class FibonacciActionClient : public rclcpp::Node {
         RCLCPP_INFO(this->get_logger(), "Goal accepted.");
     }
 
+    // 处理目标反馈的回调函数
     void feedback_callback(FibonacciGoalHandle::SharedPtr, const std::shared_ptr<const Fibonacci::Feedback> feedback) {
         std::stringstream ss;
         for (auto number : feedback->partial_sequence) {
@@ -65,6 +72,7 @@ class FibonacciActionClient : public rclcpp::Node {
         RCLCPP_INFO(this->get_logger(), "Received feedback: %s", ss.str().c_str());
     }
 
+    // 处理目标结果的回调函数
     void result_callback(const FibonacciGoalHandle::WrappedResult &result) {
         this->goal_done_ = true;
 
@@ -91,6 +99,7 @@ class FibonacciActionClient : public rclcpp::Node {
     }
 };
 
+// 主函数，初始化 ROS 2，创建动作客户端实例并发送目标，等待目标完成
 int main(int argc, char **argv) {
     rclcpp::init(argc, argv);
     auto action_client = std::make_shared<FibonacciActionClient>();

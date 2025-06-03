@@ -7,8 +7,10 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using namespace std::chrono_literals;
 
+// 斐波那契数列动作服务器类，继承自rclcpp::Node
 class FibonacciActionServer : public rclcpp::Node {
   public:
+    // 构造函数，初始化节点并创建动作服务器
     FibonacciActionServer() : Node("fibonacci_action_server") {
         this->action_server_ =
             rclcpp_action::create_server<Fibonacci>(this,
@@ -19,8 +21,10 @@ class FibonacciActionServer : public rclcpp::Node {
     }
 
   private:
+    // 动作服务器的共享指针
     rclcpp_action::Server<Fibonacci>::SharedPtr action_server_;
 
+    // 处理目标请求的方法
     rclcpp_action::GoalResponse handle_goal(const rclcpp_action::GoalUUID &uuid, std::shared_ptr<const Fibonacci::Goal> goal) {
         RCLCPP_INFO(this->get_logger(), "Received goal request: %d", goal->order);
 
@@ -34,15 +38,18 @@ class FibonacciActionServer : public rclcpp::Node {
         return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
     }
 
+    // 处理取消请求的方法
     rclcpp_action::CancelResponse handle_cancel(const std::shared_ptr<rclcpp_action::ServerGoalHandle<Fibonacci>>) {
         RCLCPP_INFO(this->get_logger(), "Received cancel request.");
         return rclcpp_action::CancelResponse::ACCEPT;
     }
 
+    // 处理已接受目标的方法
     void handle_accepted(const std::shared_ptr<rclcpp_action::ServerGoalHandle<Fibonacci>> goal_handle) {
         std::thread{std::bind(&FibonacciActionServer::execute, this, _1), goal_handle}.detach();
     }
 
+    // 执行目标的动作
     void execute(const std::shared_ptr<rclcpp_action::ServerGoalHandle<Fibonacci>> goal_handle) {
         RCLCPP_INFO(this->get_logger(), "Excuting goal...");
 
@@ -76,6 +83,7 @@ class FibonacciActionServer : public rclcpp::Node {
     }
 };
 
+// 主函数，初始化ROS 2，创建并运行动作服务器，最后关闭ROS 2
 int main(int argc, char **argv) {
     rclcpp::init(argc, argv);
     rclcpp::spin(std::make_shared<FibonacciActionServer>());
