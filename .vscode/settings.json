@@ -96,7 +96,7 @@
         "hash_map": "cpp",
         "hash_set": "cpp"
     },
-    "ros.distro": "noetic",
+    "ros.distro": "foxy",
     "[python]": {
         "editor.defaultFormatter": "ms-python.black-formatter",
         "editor.formatOnSave": true,
